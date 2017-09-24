@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title> How Did All These Gems Get in My Pocket?</title>
+	<link rel="stylesheet" type="text/css" href="assets/css/style.css">
+
+	<!-- Added link to the jQuery Library -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+
+    <!-- Added a link to Bootstrap-->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7" crossorigin="anonymous">
+</head>
+<body>
+	<div class="jumbotron">
+	    <div class="container">
+		    <h1 class=""> Hi welcome to Starbucks what can I get for you today?</h1>
+		    <p class=""> 
+		    	 <br> 
+		    	<i> Hey I'll have one iced latte, and one of those croissants ** you reach into your pocket but all you come up with is a colorful handful of tiny gems. What? you frown ** </i> <br><br> 
+		    	Okay I'll be honest -- I have no idea how much those are worth but we'll take em! Make a deal by matching your offer to a random number on the left. Go above the number and you lose. <br> <br>
+		    	Raise your offer by clicking on each of your gems. The value your things are hidden from you until you click on one. <br> <br>
+		    	Each time the game restarts, the values of your gems will change. 
+		    </p>
+	    	
+	    </div>
+
+	</div>
+
+	<div class="row row1">
+		<div class="container">
+			<div class="col-md-6 text-center" id="target"></div>
+
+			<div class="col-md-6 text-center" id="score"><strong></strong></div>
+
+		</div>
+	</div>
+
+	<div class="row row2">
+		<div class="container">
+			<div class="col-md-4">
+				<div class="panel panel-default"> 
+					<div class="container">
+						<br>
+						<p id="gameMessages"></p>
+						<p id="wins">wins: </p>
+						<p id="losses">losses: </p>
+						
+					</div>
+				</div>
+			</div>
+			
+			<div class="col-md-4"></div>
+			<div class="col-md-1 gem center-block" value="blue" va><img class="img-thumbnail gem-img" src="assets/images/blue-triangle-gem.png"></div>
+			<div class="col-md-1 gem center-block" value="garnet"><img class="img-thumbnail gem-img" src="assets/images/garnet-gem.png"></div>
+			<div class="col-md-1 gem center-block" value="topaz"><img class="img-thumbnail gem-img" src="assets/images/golden-topaz.png"></div>
+			<div class="col-md-1 gem center-block" value="pink"><img class="img-thumbnail gem-img" src="assets/images/pink-diamond-heart.png"></div>
+
+		</div>
+	</div>
+	<script type="text/javascript">
+
+// PSEUDOCODE
+//=================================================================
+// when game starts randomly generate values for all gems (1-12)
+// randomly generate target number, print to DOM (19-120)
+// Player clicks crystals
+// 		crystal value added to player score
+//		if player score > target number
+// 			player loses, update losses, update DOM
+//			start new game
+//		else if player score === target number
+//      	player wins, print to DOM
+//			start new game
+//		else
+//			return
+//================================================================
+
+ /// variables ////
+//////////////////
+$(document).ready(function(){
+	var score = 0
+	var targetNum = 0;
+	var crystals = {
+		blue: 0,
+		garnet: 0,
+		topaz: 0,
+		pink: 0,
+	};
+	var losses = 0;
+	var wins = 0;
+
+	 /// functions ////
+	//////////////////
+
+	function startNewGame() {
+		console.log("new game started!")
+		targetNum = Math.floor(Math.random() * 103) + 19;
+		crystals.blue = Math.floor(Math.random() * 12)+1; 
+		crystals.garnet = Math.floor(Math.random() * 12)+1; 
+		crystals.topaz = Math.floor(Math.random() * 12)+1; 
+		crystals.pink = Math.floor(Math.random() * 12)+1; 
+				
+		$("#target").html(targetNum);
+		score = 0;
+		$("#score").html("0");
+	}
+
+	 /// main logic, startup code ////
+	/////////////////////////////////
+	
+	startNewGame();
+
+	$(".gem").on('click', function() {
+		console.log(crystals);
+		var key = $(this).attr("value");
+		console.log(crystals[$(this).attr("value")])
+		score += crystals[key];
+		$("#score").text(score)
+		
+		if (score > targetNum) {
+			$("#gameMessages").text("You lose! Try again");
+			losses += 1;
+			$("#losses").text("losses: " +  losses); 
+			startNewGame();
+		} else if (score === targetNum) {
+			$("#gameMessages").text("You win! Here's your latte");
+			wins += 1;
+			$("#wins").text("wins: " + wins); 
+			startNewGame();
+		} else {
+			console.log("not over yet!")
+			return;
+		}
+	});
+
+
+})
+
+	</script>
+</body>
+</html>
